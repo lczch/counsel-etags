@@ -1613,7 +1613,12 @@ Extended regex is used, like (pattern1|pattern2)."
             ;; if rg is not in $PATH, then it's in `counsel-etags-grep-program'
             (or (executable-find "rg") counsel-etags-grep-program)
             ;; (if counsel-etags-debug " --debug")
-            "-n -M 1024 --no-heading --color never -s --path-separator /"
+            (concat 
+             "-n -M 1024 --no-heading --color never -s "
+             "--path-separator "
+             (if (eq system-type 'windows-nt)
+                 "\\\\"
+               "\\"))
             counsel-etags-grep-extra-arguments
             (counsel-etags-exclude-opts use-cache)
             keyword))
